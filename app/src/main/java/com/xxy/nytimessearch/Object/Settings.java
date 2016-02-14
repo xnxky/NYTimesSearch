@@ -13,9 +13,26 @@ import java.util.Set;
  */
 public class Settings implements Serializable {
 
-  public final static String DATE_FORMAT = "MM/dd/yyyy";
+  public final static String DATE_FORMAT = "yyyyMMdd";
 
-  private String date; //format MM/dd/yyyy
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
+  }
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
+  }
+
+  private String startDate; //format yyyyMMdd
+  private String endDate;
   private SortOrder sortOrder;
   private Set<String> newsDesk;
 
@@ -35,19 +52,18 @@ public class Settings implements Serializable {
   public static Settings defaultSettings = new Settings(
       SortOrder.Newest,
       new LocalDate().toString(Settings.DATE_FORMAT),
+      new LocalDate().toString(Settings.DATE_FORMAT),
       new HashSet<String>());
 
-  public Settings(SortOrder sortOrder, String date, Set<String> newsDesk) {
+  public Settings(
+      SortOrder sortOrder,
+      String startDate,
+      String endDate,
+      Set<String> newsDesk) {
     this.sortOrder = sortOrder;
-    this.date = date;
+    this.startDate = startDate;
+    this.endDate = endDate;
     this.newsDesk = newsDesk;
-  }
-
-  public void update(Settings other) {
-    this.sortOrder = other.sortOrder;
-    this.date = other.date;
-    this.newsDesk.clear();
-    this.newsDesk.addAll(other.newsDesk);
   }
 
   public SortOrder getSortOrder() {
@@ -62,15 +78,14 @@ public class Settings implements Serializable {
     return newsDesk;
   }
 
-  public int[] getDate() {
-    String[] dateArray = date.split("/");
-    int year = Integer.valueOf(dateArray[2]);
-    int month = Integer.valueOf(dateArray[0])-1;
-    int day = Integer.valueOf(dateArray[1]);
+  public static int[] getDate(String date) {
+    int year = Integer.valueOf(date.substring(0,4));
+    int month = Integer.valueOf(date.substring(4, 6))-1;
+    int day = Integer.valueOf(date.substring(6));
     return new int[]{year, month, day};
   }
 
-  public void setDate(
+  public static String getDateString(
       int year, int month, int day
   ) {
     String yearString = String.valueOf(year);
@@ -78,7 +93,7 @@ public class Settings implements Serializable {
         "0" + String.valueOf(month+1) : String.valueOf(month+1);
     String dayString = day < 10 ?
         "0" + String.valueOf(day) : String.valueOf(day);
-    date = monthString+"/"+dayString+"/"+yearString;
+    return yearString+monthString+dayString;
   }
 
 }

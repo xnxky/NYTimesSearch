@@ -7,10 +7,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.common.collect.ImmutableList;
 import com.xxy.nytimessearch.Object.Settings;
 import com.xxy.nytimessearch.R;
+
+import org.joda.time.LocalDate;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,16 +24,12 @@ import butterknife.OnClick;
  */
 
 public class SettingsSavedListener {
-  @Bind(R.id.dpBegin)
-  DatePicker dpBeginDate;
-  @Bind(R.id.spSortOrder)
-  Spinner spSortOrder;
-  @Bind(R.id.cbArts)
-  CheckBox cbArts;
-  @Bind(R.id.cbFashion)
-  CheckBox cbFashion;
-  @Bind(R.id.cbSports)
-  CheckBox cbSports;
+  @Bind(R.id.dpBegin) DatePicker dpBeginDate;
+  @Bind(R.id.dpEnd) DatePicker dpEndDate;
+  @Bind(R.id.spSortOrder) Spinner spSortOrder;
+  @Bind(R.id.cbArts) CheckBox cbArts;
+  @Bind(R.id.cbFashion) CheckBox cbFashion;
+  @Bind(R.id.cbSports) CheckBox cbSports;
 
   private ArrayAdapter<String> spinnerAdapter;
   private Settings settings;
@@ -44,13 +43,55 @@ public class SettingsSavedListener {
         Settings.sortOrderValues);
   }
 
+  private boolean isDateValid(
+      int[] begin, int[] end
+  ) {
+    //year
+    if(begin[0] > end[0]) return false;
+    if(begin[0] < end[0]) return true;
+    //month
+    if(begin[1] > end[1]) return false;
+    if(begin[1] < end[1]) return true;
+    //day
+    return begin[2] <= end[2];
+  }
+
   @OnClick(R.id.btnSave)
   public void saveSettings(View view) {
-    settings.setDate(
-        dpBeginDate.getYear(),
-        dpBeginDate.getMonth(),
-        dpBeginDate.getDayOfMonth()
+    if(!isDateValid(
+        new int[] {dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
+        new int[] {dpEndDate.getYear(), dpEndDate.getMonth(), dpEndDate.getDayOfMonth()}))  {
+      Toast.makeText(
+          dialog.getContext(),
+          "Begin Date is later than End Date", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    if(!isDateValid(
+        new int[] {dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
+        Settings.getDate(new LocalDate().toString(Settings.DATE_FORMAT)))) {
+      Toast.makeText(
+          dialog.getContext(),
+          "Begin Date is bigger than today's Date", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    settings.setStartDate(
+        Settings.getDateString(
+            dpBeginDate.getYear(),
+            dpBeginDate.getMonth(),
+            dpBeginDate.getDayOfMonth()
+        )
     );
+
+    settings.setEndDate(
+        Settings.getDateString(
+            dpEndDate.getYear(),
+            dpEndDate.getMonth(),
+            dpEndDate.getDayOfMonth()
+        )
+    );
+
     settings.setSortOrder(
         Settings.SortOrder.valueOf(
             (String) spSortOrder.getSelectedItem()
@@ -69,19 +110,30 @@ public class SettingsSavedListener {
 
   public void setView(View view) {
     ButterKnife.bind(this, view);
-    initializedView();
+    initializeView();
   }
 
   public void setDialog(Dialog dialog) {
     this.dialog = dialog;
   }
 
-  public void initializedView() {
-    int[] date = settings.getDate();
+  public void initializeView() {
+    int[] beginDate = Settings.getDate(
+        settings.getStartDate()
+    );
     dpBeginDate.init(
-        date[0],
-        date[1],
-        date[2],
+        beginDate[0],
+        beginDate[1],
+        beginDate[2],
+        null
+    );
+    int[] endDate = Settings.getDate(
+        settings.getEndDate()
+    );
+    dpEndDate.init(
+        endDate[0],
+        endDate[1],
+        endDate[2],
         null
     );
     spSortOrder.setAdapter(spinnerAdapter);
@@ -92,4 +144,5 @@ public class SettingsSavedListener {
       ctView.setChecked(settings.getNewsDesk().contains(newsDeskText));
     }
   }
+
 }

@@ -12,4 +12,6 @@
     <string name="checktextview_sports">Sports</string>
     <string name="save_button">Save</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="end_date">End Date</string>
+    <string name="share">share</string>
 </resources>

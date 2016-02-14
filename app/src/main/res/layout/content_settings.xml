@@ -81,13 +81,31 @@
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="start"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:id="@+id/dpBegin"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tvBeginDate"
         android:layout_toEndOf="@+id/tvBeginDate"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_date"
+        android:id="@+id/tvEndDate"
+        android:layout_below="@+id/dpBegin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dpEnd"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:layout_below="@+id/dpBegin"
+        android:layout_toRightOf="@+id/tvEndDate"
+        android:layout_toEndOf="@+id/tvEndDate"/>
 </RelativeLayout>
 
 
