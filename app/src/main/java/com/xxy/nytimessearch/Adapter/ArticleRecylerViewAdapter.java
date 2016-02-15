@@ -22,9 +22,9 @@ import java.util.List;
 public class ArticleRecylerViewAdapter
     extends RecyclerView.Adapter<BaseViewHolder> {
 
+  private final static int IMAGE_ARTICLE = 0, TEXT_ARTICLE = 1;
   private List<Article> mArticles;
   private OnItemClickListener mListener;
-  private final static int IMAGE_ARTICLE = 0, TEXT_ARTICLE = 1;
 
   public ArticleRecylerViewAdapter(
       List<Article> articles, OnItemClickListener listener) {
@@ -58,7 +58,7 @@ public class ArticleRecylerViewAdapter
 
   @Override
   public int getItemViewType(int position) {
-    if(mArticles.get(position) instanceof ArticleWithThumbnail) {
+    if (mArticles.get(position) instanceof ArticleWithThumbnail) {
       return IMAGE_ARTICLE;
     } else if (mArticles.get(position) instanceof ArticleWithoutThumbnail) {
       return TEXT_ARTICLE;

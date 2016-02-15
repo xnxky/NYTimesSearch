@@ -20,21 +20,21 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.xxy.nytimessearch.Adapter.ArticleRecylerViewAdapter;
 import com.xxy.nytimessearch.DialogFragment.SettingsDialogFragment;
 import com.xxy.nytimessearch.Listener.EndlessRecyclerViewScrollListener;
+import com.xxy.nytimessearch.Listener.OnItemClickListener;
 import com.xxy.nytimessearch.Listener.SettingsSavedListener;
+import com.xxy.nytimessearch.Model.NYTimeArticle;
 import com.xxy.nytimessearch.Object.Article;
 import com.xxy.nytimessearch.Object.Settings;
 import com.xxy.nytimessearch.R;
-import com.xxy.nytimessearch.Listener.OnItemClickListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -61,6 +61,7 @@ public class SearchActivity extends AppCompatActivity {
   StaggeredGridLayoutManager articleLayoutManager;
   private Settings settings;
   private RequestParams params;
+  private Gson gson = new GsonBuilder().create();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class SearchActivity extends AppCompatActivity {
     ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
     mArticles = new ArrayList<>();
-    settings =  new Settings();
+    settings = new Settings();
     setupViews();
   }
 
@@ -204,14 +205,13 @@ public class SearchActivity extends AppCompatActivity {
       Toast.makeText(this, "internet is not connected", Toast.LENGTH_SHORT).show();
       return;
     }
-
+/*
     client.get(url, params, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         JSONArray articleJsonResult;
         try {
           articleJsonResult = response.getJSONObject("response").getJSONArray("docs");
-          String resonseStr = response.toString();
           int curSize = mArticles.size();
           List<Article> newArticles = Article.fromJsonArray(articleJsonResult);
           for (int idx = 0; idx < newArticles.size(); idx++) {
@@ -227,7 +227,6 @@ public class SearchActivity extends AppCompatActivity {
           Log.e("json parsing exception", e.toString());
         }
       }
-
       @Override
       public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
         Toast.makeText(
@@ -237,6 +236,32 @@ public class SearchActivity extends AppCompatActivity {
         Log.e("fetch articles failed",
             String.format("error code %s and response %s", statusCode, responseString),
             throwable);
+      }
+    });
+  */
+    client.get(url, params, new TextHttpResponseHandler() {
+      @Override
+      public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+        Toast.makeText(
+            getApplicationContext(),
+            "fetch articles failed; try again later",
+            Toast.LENGTH_SHORT).show();
+        Log.e("fetch articles failed",
+            String.format("error code %s and response %s", statusCode, responseString),
+            throwable);
+      }
+
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, String responseString) {
+        //articleJsonResult = response.getJSONObject("response").getJSONArray("docs");
+        int curSize = mArticles.size();
+        NYTimeArticle nyTimeArticle = gson.fromJson(responseString, NYTimeArticle.class);
+        List<Article> newArticles = Article.fromNYTimeArticle(nyTimeArticle);
+        for (int idx = 0; idx < newArticles.size(); idx++) {
+          mArticles.add(curSize + idx, newArticles.get(idx));
+          rcAdapter.notifyItemInserted(curSize + idx);
+
+        }
       }
     });
   }

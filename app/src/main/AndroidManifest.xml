@@ -28,8 +28,9 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <meta-data android:name="com.xxy.nytimessearch.Util.GlideConfiguration"
-                   android:value="GlideModule"/>
+        <meta-data
+            android:name="com.xxy.nytimessearch.Util.GlideConfiguration"
+            android:value="GlideModule"/>
     </application>
 
 </manifest>

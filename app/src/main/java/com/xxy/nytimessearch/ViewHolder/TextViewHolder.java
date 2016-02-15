@@ -16,20 +16,21 @@ import butterknife.ButterKnife;
  */
 public class TextViewHolder extends BaseViewHolder {
 
-  public TextView getTvTitle() {
-    return tvTitle;
-  }
-
-  @Bind(R.id.tvTitle) TextView tvTitle;
+  @Bind(R.id.tvTitle)
+  TextView tvTitle;
 
   public TextViewHolder(View itemView, OnItemClickListener listener) {
     super(itemView, listener);
     ButterKnife.bind(this, itemView);
   }
 
+  public TextView getTvTitle() {
+    return tvTitle;
+  }
+
   @Override
   public void bindView(Article article) {
-    if(!(article instanceof ArticleWithoutThumbnail)) {
+    if (!(article instanceof ArticleWithoutThumbnail)) {
       throw new RuntimeException("TextViewHolder binding on wrong article type");
     }
     tvTitle.setText(article.getHeadline());

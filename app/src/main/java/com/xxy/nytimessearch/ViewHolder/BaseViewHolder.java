@@ -9,7 +9,7 @@ import com.xxy.nytimessearch.Object.Article;
 /**
  * Created by xiangyang_xiao on 2/14/16.
  */
-public abstract  class BaseViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
   OnItemClickListener mListener;
 
@@ -20,7 +20,7 @@ public abstract  class BaseViewHolder extends RecyclerView.ViewHolder {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            if(mListener != null) {
+            if (mListener != null) {
               mListener.onItemClick(v, getLayoutPosition());
             }
           }

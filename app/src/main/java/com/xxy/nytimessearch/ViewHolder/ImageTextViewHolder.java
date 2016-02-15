@@ -24,17 +24,20 @@ import butterknife.ButterKnife;
  */
 public class ImageTextViewHolder extends BaseViewHolder {
 
-  @Bind(R.id.ivImage) ImageView ivThumbNail;
-    @Bind(R.id.pbLoading) ProgressBar pbLoading;
-    @Bind(R.id.tvTitle) TextView tvTitle;
+  @Bind(R.id.ivImage)
+  ImageView ivThumbNail;
+  @Bind(R.id.pbLoading)
+  ProgressBar pbLoading;
+  @Bind(R.id.tvTitle)
+  TextView tvTitle;
 
   Context mContext;
 
-    public ImageTextViewHolder(View itemView, OnItemClickListener listener, Context context) {
-      super(itemView, listener);
-      mContext = context;
-      ButterKnife.bind(this, itemView);
-    }
+  public ImageTextViewHolder(View itemView, OnItemClickListener listener, Context context) {
+    super(itemView, listener);
+    mContext = context;
+    ButterKnife.bind(this, itemView);
+  }
 
   /*
     @Override
@@ -56,7 +59,7 @@ public class ImageTextViewHolder extends BaseViewHolder {
 
   @Override
   public void bindView(Article article) {
-    if(!(article instanceof ArticleWithThumbnail)) {
+    if (!(article instanceof ArticleWithThumbnail)) {
       throw new RuntimeException("bind imageTextViewHolder on a wrong object");
     }
 
@@ -67,7 +70,7 @@ public class ImageTextViewHolder extends BaseViewHolder {
     ivThumbNail.setVisibility(View.VISIBLE);
     pbLoading.setVisibility(View.VISIBLE);
     Glide.with(mContext)
-          .load(thumbNail)
+        .load(thumbNail)
         .listener(new RequestListener<String, GlideDrawable>() {
           @Override
           public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -80,11 +83,11 @@ public class ImageTextViewHolder extends BaseViewHolder {
             return false;
           }
         })
-          .diskCacheStrategy(DiskCacheStrategy.ALL)
-          .placeholder(R.drawable.placeholder)
-          .error(R.drawable.placeholder_error)
-        //TODO: how to dynamiclly resize the height
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .placeholder(R.drawable.placeholder)
+        .error(R.drawable.placeholder_error)
+            //TODO: how to dynamiclly resize the height
         .centerCrop()
-          .into(ivThumbNail); //com.squareup.picasso.Target is for picasso
+        .into(ivThumbNail); //com.squareup.picasso.Target is for picasso
   }
 }
