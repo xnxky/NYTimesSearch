@@ -31,14 +31,14 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
   public View getView(int position, View convertView, ViewGroup parent) {
     ViewHolder viewHolder;
     Article article = getItem(position);
-    if(convertView == null) {
+    if (convertView == null) {
       convertView = LayoutInflater
           .from(getContext())
           .inflate(R.layout.item_article_layout, parent, false);
       viewHolder = new ViewHolder(convertView);
       convertView.setTag(viewHolder);
     } else {
-      viewHolder = (ViewHolder)convertView.getTag();
+      viewHolder = (ViewHolder) convertView.getTag();
     }
 
     viewHolder.imageView.setImageResource(0);
@@ -46,7 +46,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 
     String thumbNail = article.getThumbNail();
 
-    if(!TextUtils.isEmpty(thumbNail)) {
+    if (!TextUtils.isEmpty(thumbNail)) {
       Picasso
           .with(getContext())
           .load(thumbNail)
@@ -58,8 +58,11 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
   }
 
   class ViewHolder {
-    @Bind(R.id.ivImage) ImageView imageView;
-    @Bind(R.id.tvTitle) TextView tvTitle;
+    @Bind(R.id.ivImage)
+    ImageView imageView;
+    @Bind(R.id.tvTitle)
+    TextView tvTitle;
+
     public ViewHolder(View view) {
       ButterKnife.bind(this, view);
     }

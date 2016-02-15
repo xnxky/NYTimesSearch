@@ -10,19 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by xiangyang_xiao on 2/10/16.
  */
-public class Article implements Serializable{
-  public String getHeadline() {
-    return headline;
-  }
-
-  public String getWebUrl() {
-    return webUrl;
-  }
-
-  public String getThumbNail() {
-    return thumbNail;
-  }
-
+public class Article implements Serializable {
   String webUrl;
   String headline;
   String thumbNail;
@@ -33,13 +21,13 @@ public class Article implements Serializable{
       headline = jsonObject.getJSONObject("headline").getString("main");
 
       JSONArray multimedia = jsonObject.getJSONArray("multimedia");
-      if(multimedia.length() > 0) {
+      if (multimedia.length() > 0) {
         JSONObject multimediaJson = multimedia.getJSONObject(0);
         thumbNail = "http://www.nytimes.com/" + multimediaJson.getString("url");
       } else {
         thumbNail = "";
       }
-    } catch(JSONException e) {
+    } catch (JSONException e) {
 
     }
   }
@@ -47,7 +35,7 @@ public class Article implements Serializable{
   public static ArrayList<Article> fromJsonArray(JSONArray jsonArray) {
     ArrayList<Article> results = new ArrayList<>();
 
-    for(int x=0; x<jsonArray.length(); x++) {
+    for (int x = 0; x < jsonArray.length(); x++) {
       try {
         results.add(new Article(jsonArray.getJSONObject(x)));
       } catch (JSONException e) {
@@ -55,5 +43,17 @@ public class Article implements Serializable{
       }
     }
     return results;
+  }
+
+  public String getHeadline() {
+    return headline;
+  }
+
+  public String getWebUrl() {
+    return webUrl;
+  }
+
+  public String getThumbNail() {
+    return thumbNail;
   }
 }

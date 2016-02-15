@@ -5,7 +5,7 @@ import android.widget.AbsListView;
 /**
  * Created by xiangyang_xiao on 2/13/16.
  */
-public abstract  class EndlessScrollListener
+public abstract class EndlessScrollListener
     implements AbsListView.OnScrollListener {
 
   private int visibleThreshold = 8;
@@ -26,15 +26,17 @@ public abstract  class EndlessScrollListener
     this.startingPageIndex = startPage;
     this.currentPage = startPage;
   }
+
   @Override
-  public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-  {
+  public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
     // If the total item count is zero and the previous isn't, assume the
     // list is invalidated and should be reset back to initial state
     if (totalItemCount < previousTotalItemCount) {
       this.currentPage = this.startingPageIndex;
       this.previousTotalItemCount = totalItemCount;
-      if (totalItemCount == 0) { this.loading = true; }
+      if (totalItemCount == 0) {
+        this.loading = true;
+      }
     }
     // If it's still loading, we check to see if the dataset count has
     // changed, if so we conclude it has finished loading and update the current page
@@ -48,7 +50,7 @@ public abstract  class EndlessScrollListener
     // If it isn't currently loading, we check to see if we have breached
     // the visibleThreshold and need to reload more data.
     // If we do need to reload some more data, we execute onLoadMore to fetch the data.
-    if (!loading && (firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount ) {
+    if (!loading && (firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount) {
       loading = onLoadMore(currentPage + 1, totalItemCount);
     }
   }
