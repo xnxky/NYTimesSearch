@@ -2,6 +2,7 @@ package com.xxy.nytimessearch.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,13 +13,17 @@ import android.webkit.WebViewClient;
 import com.xxy.nytimessearch.Object.Article;
 import com.xxy.nytimessearch.R;
 
+import org.parceler.Parcels;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ArticleActivity extends AppCompatActivity {
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.wvArticle) WebView webView;
+  @Bind(R.id.toolbar)
+  Toolbar toolbar;
+  @Bind(R.id.wvArticle)
+  WebView webView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +31,11 @@ public class ArticleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_article);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setDisplayHomeAsUpEnabled(true);
 
-    Article article = (Article)getIntent().getSerializableExtra("article");
+    Article article = Parcels.unwrap(
+        getIntent().getParcelableExtra("article"));
     webView.setWebViewClient(new WebViewClient() {
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -50,6 +58,8 @@ public class ArticleActivity extends AppCompatActivity {
       case R.id.action_share:
         actionShare();
         return true;
+      case android.R.id.home:
+        this.finish();
       default:
         return super.onOptionsItemSelected(item);
     }

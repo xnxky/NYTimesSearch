@@ -1,111 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/begin_date"
         android:id="@+id/tvBeginDate"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sort_order"
-        android:id="@+id/tvSortOrder"
-        android:layout_below="@+id/dpBegin"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="64dp"/>
+        android:layout_alignParentTop="true"
+        android:text="@string/begin_date"/>
 
-    <Spinner
+
+    <DatePicker
+        android:id="@+id/dpBegin"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/datepicker_height"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:layout_toRightOf="@id/tvBeginDate"
+        android:layout_toEndOf="@id/tvBeginDate"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tvEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/dpBegin"
+        android:text="@string/end_date"/>
+
+    <DatePicker
+        android:id="@+id/dpEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/datepicker_height"
+        android:layout_below="@id/dpBegin"
+        android:layout_toRightOf="@id/tvEndDate"
+        android:layout_toEndOf="@id/tvEndDate"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"/>
+
+    <TextView
+        android:id="@+id/tvSortOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/dpEnd"
+        android:text="@string/sort_order"/>
+
+    <Spinner
         android:id="@+id/spSortOrder"
-        android:layout_alignTop="@+id/tvSortOrder"
-        android:layout_alignLeft="@+id/dpBegin"
-        android:layout_alignStart="@+id/dpBegin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvSortOrder"
+        android:layout_toRightOf="@id/tvSortOrder"
+        android:layout_toEndOf="@id/tvSortOrder"
         android:spinnerMode="dropdown"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/news_desk"
         android:id="@+id/tvNewsDesk"
-        android:layout_below="@+id/spSortOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_alignRight="@id/tvEndDate"
+        android:layout_alignEnd="@id/tvEndDate"
+        android:layout_below="@id/spSortOrder"
+        android:text="@string/news_desk"/>
 
     <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checktextview_arts"
         android:id="@+id/cbArts"
-        android:layout_below="@+id/spSortOrder"
-        android:layout_toRightOf="@+id/tvNewsDesk"
-        android:layout_toEndOf="@+id/tvNewsDesk"
-        android:checked="false"/>
-
-    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checktextview_fashion"
+        android:layout_below="@id/spSortOrder"
+        android:layout_toEndOf="@id/tvNewsDesk"
+        android:layout_toRightOf="@id/tvNewsDesk"
+        android:layout_alignLeft="@id/spSortOrder"
+        android:layout_alignStart="@id/spSortOrder"
+        android:layout_alignTop="@id/tvNewsDesk"
+        android:checked="false"
+        android:text="@string/checktextview_arts"/>
+
+    <CheckBox
         android:id="@+id/cbFashion"
-        android:layout_below="@+id/tvNewsDesk"
-        android:layout_toRightOf="@+id/tvNewsDesk"
-        android:layout_toEndOf="@+id/tvNewsDesk"
-        android:checked="false"/>
-
-    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checktextview_sports"
+        android:layout_below="@id/tvNewsDesk"
+        android:layout_toEndOf="@id/tvNewsDesk"
+        android:layout_toRightOf="@id/tvNewsDesk"
+        android:layout_alignLeft="@id/spSortOrder"
+        android:layout_alignStart="@id/spSortOrder"
+        android:checked="false"
+        android:text="@string/checktextview_fashion"/>
+
+    <CheckBox
         android:id="@+id/cbSports"
-        android:layout_below="@+id/cbFashion"
-        android:layout_alignLeft="@+id/cbFashion"
-        android:layout_alignStart="@+id/cbFashion"
-        android:checked="false"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/cbFashion"
+        android:layout_alignStart="@id/cbFashion"
+        android:layout_below="@id/cbFashion"
+        android:checked="false"
+        android:text="@string/checktextview_sports"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save_button"
         android:id="@+id/btnSave"
-        android:layout_below="@+id/cbSports"
-        android:layout_centerHorizontal="true"/>
-
-    <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:id="@+id/dpBegin"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/tvBeginDate"
-        android:layout_toEndOf="@+id/tvBeginDate"/>
+        android:layout_below="@id/cbSports"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:text="@string/save_button"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/end_date"
-        android:id="@+id/tvEndDate"
-        android:layout_below="@+id/dpBegin"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dpEnd"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:layout_below="@+id/dpBegin"
-        android:layout_toRightOf="@+id/tvEndDate"
-        android:layout_toEndOf="@+id/tvEndDate"/>
 </RelativeLayout>
 
 

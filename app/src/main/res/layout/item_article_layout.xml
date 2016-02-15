@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+    <com.xxy.nytimessearch.Util.DynamicHeightImageView
         android:id="@+id/ivImage"
-        android:src="@mipmap/ic_launcher"
-        android:scaleType="center"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-    <TextView
+    <ProgressBar
+        android:id="@+id/pbLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/tvTitle"
-        android:maxLines="2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:text="text"/>
+        android:maxLines="2"/>
 </LinearLayout>

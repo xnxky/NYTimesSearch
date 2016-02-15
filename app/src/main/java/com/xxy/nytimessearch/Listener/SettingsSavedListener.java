@@ -24,12 +24,18 @@ import butterknife.OnClick;
  */
 
 public class SettingsSavedListener {
-  @Bind(R.id.dpBegin) DatePicker dpBeginDate;
-  @Bind(R.id.dpEnd) DatePicker dpEndDate;
-  @Bind(R.id.spSortOrder) Spinner spSortOrder;
-  @Bind(R.id.cbArts) CheckBox cbArts;
-  @Bind(R.id.cbFashion) CheckBox cbFashion;
-  @Bind(R.id.cbSports) CheckBox cbSports;
+  @Bind(R.id.dpBegin)
+  DatePicker dpBeginDate;
+  @Bind(R.id.dpEnd)
+  DatePicker dpEndDate;
+  @Bind(R.id.spSortOrder)
+  Spinner spSortOrder;
+  @Bind(R.id.cbArts)
+  CheckBox cbArts;
+  @Bind(R.id.cbFashion)
+  CheckBox cbFashion;
+  @Bind(R.id.cbSports)
+  CheckBox cbSports;
 
   private ArrayAdapter<String> spinnerAdapter;
   private Settings settings;
@@ -47,28 +53,28 @@ public class SettingsSavedListener {
       int[] begin, int[] end
   ) {
     //year
-    if(begin[0] > end[0]) return false;
-    if(begin[0] < end[0]) return true;
+    if (begin[0] > end[0]) return false;
+    if (begin[0] < end[0]) return true;
     //month
-    if(begin[1] > end[1]) return false;
-    if(begin[1] < end[1]) return true;
+    if (begin[1] > end[1]) return false;
+    if (begin[1] < end[1]) return true;
     //day
     return begin[2] <= end[2];
   }
 
   @OnClick(R.id.btnSave)
   public void saveSettings(View view) {
-    if(!isDateValid(
-        new int[] {dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
-        new int[] {dpEndDate.getYear(), dpEndDate.getMonth(), dpEndDate.getDayOfMonth()}))  {
+    if (!isDateValid(
+        new int[]{dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
+        new int[]{dpEndDate.getYear(), dpEndDate.getMonth(), dpEndDate.getDayOfMonth()})) {
       Toast.makeText(
           dialog.getContext(),
           "Begin Date is later than End Date", Toast.LENGTH_SHORT).show();
       return;
     }
 
-    if(!isDateValid(
-        new int[] {dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
+    if (!isDateValid(
+        new int[]{dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
         Settings.getDate(new LocalDate().toString(Settings.DATE_FORMAT)))) {
       Toast.makeText(
           dialog.getContext(),

@@ -18,7 +18,8 @@ public class SettingsDialogFragment extends DialogFragment {
 
   private SettingsSavedListener listener;
 
-  public SettingsDialogFragment() {}
+  public SettingsDialogFragment() {
+  }
 
   public static SettingsDialogFragment newInstance(
       SettingsSavedListener listener
