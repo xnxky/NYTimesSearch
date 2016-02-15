@@ -2,7 +2,6 @@ package com.xxy.nytimessearch.Object;
 
 import org.joda.time.LocalDate;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,16 +10,12 @@ import java.util.Set;
 /**
  * Created by xiangyang_xiao on 2/12/16.
  */
-public class Settings implements Serializable {
+
+public class Settings {
 
   public final static String DATE_FORMAT = "yyyyMMdd";
   public static List<String> sortOrderValues =
       new ArrayList<>();
-  public static Settings defaultSettings = new Settings(
-      SortOrder.Newest,
-      new LocalDate().minusWeeks(1).toString(Settings.DATE_FORMAT),
-      new LocalDate().toString(Settings.DATE_FORMAT),
-      new HashSet<String>());
 
   static {
     for (SortOrder order : SortOrder.values()) {
@@ -32,6 +27,14 @@ public class Settings implements Serializable {
   private String endDate;
   private SortOrder sortOrder;
   private Set<String> newsDesk;
+
+  public Settings() {
+    sortOrder = SortOrder.Newest;
+    startDate = new LocalDate().minusWeeks(1).toString(Settings.DATE_FORMAT);
+    endDate = new LocalDate().toString(Settings.DATE_FORMAT);
+    newsDesk = new HashSet<>();
+  }
+
   public Settings(
       SortOrder sortOrder,
       String startDate,

@@ -1,73 +1,54 @@
 package com.xxy.nytimessearch.Adapter;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import com.xxy.nytimessearch.Listener.OnItemClickListener;
 import com.xxy.nytimessearch.Object.Article;
+import com.xxy.nytimessearch.Object.ArticleWithThumbnail;
+import com.xxy.nytimessearch.Object.ArticleWithoutThumbnail;
 import com.xxy.nytimessearch.R;
-import com.xxy.nytimessearch.Util.DynamicHeightImageView;
+import com.xxy.nytimessearch.ViewHolder.BaseViewHolder;
+import com.xxy.nytimessearch.ViewHolder.ImageTextViewHolder;
+import com.xxy.nytimessearch.ViewHolder.TextViewHolder;
 
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by xiangyang_xiao on 2/14/16.
  */
 public class ArticleRecylerViewAdapter
-    extends RecyclerView.Adapter<ArticleRecylerViewAdapter.ViewHolder> {
+    extends RecyclerView.Adapter<BaseViewHolder> {
 
-  public static OnItemClickListener listener;
-  Context mContext;
   private List<Article> mArticles;
+  private OnItemClickListener mListener;
+  private final static int IMAGE_ARTICLE = 0, TEXT_ARTICLE = 1;
 
-  public ArticleRecylerViewAdapter(List<Article> articles) {
+  public ArticleRecylerViewAdapter(
+      List<Article> articles, OnItemClickListener listener) {
     mArticles = articles;
-  }
-
-  public void setOnItemClickListener(
-      OnItemClickListener listener) {
-    this.listener = listener;
+    mListener = listener;
   }
 
   @Override
-  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View articleView = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.item_article_layout, parent, false);
-    mContext = parent.getContext();
-    return new ViewHolder(articleView);
-  }
-
-  @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.ivThumbNail.setImageDrawable(null);
-    Article article = mArticles.get(position);
-    holder.tvTitle.setText(article.getHeadline());
-    String thumbNail = article.getThumbNail();
-
-    if (!TextUtils.isEmpty(thumbNail)) {
-      holder.ivThumbNail.setVisibility(View.VISIBLE);
-      holder.pbLoading.setVisibility(View.VISIBLE);
-      Picasso.with(mContext)
-          .load(thumbNail)
-          .placeholder(R.drawable.placeholder)
-          .error(R.drawable.placeholder_error)
-          .into(holder);
-      holder.pbLoading.setVisibility(View.GONE);
-    } else {
-      holder.ivThumbNail.setVisibility(View.GONE);
+  public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    switch (viewType) {
+      case IMAGE_ARTICLE:
+        View imageArticleView = inflater.inflate(R.layout.item_image_text_layout, parent, false);
+        return new ImageTextViewHolder(imageArticleView, mListener, parent.getContext());
+      default:
+        View textArticleView = inflater.inflate(R.layout.item_text_layout, parent, false);
+        return new TextViewHolder(textArticleView, mListener);
     }
+  }
+
+  @Override
+  public void onBindViewHolder(BaseViewHolder holder, int position) {
+    Article article = mArticles.get(position);
+    holder.bindView(article);
   }
 
   @Override
@@ -75,48 +56,14 @@ public class ArticleRecylerViewAdapter
     return mArticles.size();
   }
 
-  public interface OnItemClickListener {
-    void onItemClick(View itemView, int position);
+  @Override
+  public int getItemViewType(int position) {
+    if(mArticles.get(position) instanceof ArticleWithThumbnail) {
+      return IMAGE_ARTICLE;
+    } else if (mArticles.get(position) instanceof ArticleWithoutThumbnail) {
+      return TEXT_ARTICLE;
+    }
+    return -1;
   }
-
-  public static class ViewHolder
-      extends RecyclerView.ViewHolder implements Target {
-    @Bind(R.id.ivImage) DynamicHeightImageView ivThumbNail;
-    @Bind(R.id.pbLoading) ProgressBar pbLoading;
-    @Bind(R.id.tvTitle) TextView tvTitle;
-
-    public ViewHolder(View itemView) {
-      super(itemView);
-      ButterKnife.bind(this, itemView);
-      itemView.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View viewItem) {
-              if (listener != null) {
-                listener.onItemClick(viewItem, getLayoutPosition());
-              }
-            }
-          }
-      );
-    }
-
-    @Override
-    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-      float ratio = (float) bitmap.getHeight() / (float) bitmap.getWidth();
-      ivThumbNail.setHeightRatio(ratio);
-      ivThumbNail.setImageBitmap(bitmap);
-    }
-
-    @Override
-    public void onBitmapFailed(Drawable errorDrawable) {
-
-    }
-
-    @Override
-    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-    }
-  }
-
 }
 

@@ -13,6 +13,8 @@ import android.webkit.WebViewClient;
 import com.xxy.nytimessearch.Object.Article;
 import com.xxy.nytimessearch.R;
 
+import org.parceler.Parcels;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -32,7 +34,8 @@ public class ArticleActivity extends AppCompatActivity {
     ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
 
-    Article article = (Article) getIntent().getSerializableExtra("article");
+    Article article = Parcels.unwrap(
+        getIntent().getParcelableExtra("article"));
     webView.setWebViewClient(new WebViewClient() {
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, String url) {

@@ -30,10 +30,12 @@ import com.xxy.nytimessearch.Listener.SettingsSavedListener;
 import com.xxy.nytimessearch.Object.Article;
 import com.xxy.nytimessearch.Object.Settings;
 import com.xxy.nytimessearch.R;
+import com.xxy.nytimessearch.Listener.OnItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,20 +73,19 @@ public class SearchActivity extends AppCompatActivity {
     ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
     mArticles = new ArrayList<>();
-    settings = Settings.defaultSettings;
+    settings =  new Settings();
     setupViews();
   }
 
   public void setupViews() {
     rvResults.setHasFixedSize(true);
-    rcAdapter = new ArticleRecylerViewAdapter(mArticles);
-    rcAdapter.setOnItemClickListener(
-        new ArticleRecylerViewAdapter.OnItemClickListener() {
+    rcAdapter = new ArticleRecylerViewAdapter(mArticles,
+        new OnItemClickListener() {
           @Override
           public void onItemClick(View itemView, int position) {
             Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
             Article article = mArticles.get(position);
-            intent.putExtra("article", article);
+            intent.putExtra("article", Parcels.wrap(article));
             startActivity(intent);
           }
         }
@@ -210,6 +211,7 @@ public class SearchActivity extends AppCompatActivity {
         JSONArray articleJsonResult;
         try {
           articleJsonResult = response.getJSONObject("response").getJSONArray("docs");
+          String resonseStr = response.toString();
           int curSize = mArticles.size();
           List<Article> newArticles = Article.fromJsonArray(articleJsonResult);
           for (int idx = 0; idx < newArticles.size(); idx++) {
