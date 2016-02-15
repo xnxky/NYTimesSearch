@@ -5,4 +5,5 @@
     <dimen name="article_vertical_magrin">30dp</dimen>
     <dimen name="article_horizontal_margin">3dp</dimen>
     <dimen name="image_height">110dp</dimen>
+    <dimen name="datepicker_height">160dp</dimen>
 </resources>
