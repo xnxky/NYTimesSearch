@@ -38,6 +38,7 @@ import com.xxy.nytimessearch.R;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -152,6 +153,15 @@ public class SearchActivity extends AppCompatActivity {
           }
         }
     );
+
+    if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+      try {
+        Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+        m.setAccessible(true);
+        m.invoke(menu, true);
+      } catch (Exception e) {
+      }
+    }
     return true;
   }
 
