@@ -25,25 +25,13 @@ public class Settings {
 
   private String startDate; //format yyyyMMdd
   private String endDate;
-  private SortOrder sortOrder;
+  private String sortOrder;
   private Set<String> newsDesk;
 
   public Settings() {
-    sortOrder = SortOrder.Newest;
     startDate = new LocalDate().minusWeeks(1).toString(Settings.DATE_FORMAT);
     endDate = new LocalDate().toString(Settings.DATE_FORMAT);
     newsDesk = new HashSet<>();
-  }
-
-  public Settings(
-      SortOrder sortOrder,
-      String startDate,
-      String endDate,
-      Set<String> newsDesk) {
-    this.sortOrder = sortOrder;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.newsDesk = newsDesk;
   }
 
   public static int[] getDate(String date) {
@@ -80,11 +68,11 @@ public class Settings {
     this.endDate = endDate;
   }
 
-  public SortOrder getSortOrder() {
+  public String getSortOrder() {
     return sortOrder;
   }
 
-  public void setSortOrder(SortOrder sortOrder) {
+  public void setSortOrder(String sortOrder) {
     this.sortOrder = sortOrder;
   }
 

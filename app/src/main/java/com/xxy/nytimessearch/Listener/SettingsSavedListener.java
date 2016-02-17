@@ -1,15 +1,16 @@
 package com.xxy.nytimessearch.Listener;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.collect.ImmutableList;
+import com.xxy.nytimessearch.DialogFragment.DatePickerFragment;
 import com.xxy.nytimessearch.Object.Settings;
 import com.xxy.nytimessearch.R;
 
@@ -24,10 +25,10 @@ import butterknife.OnClick;
  */
 
 public class SettingsSavedListener {
-  @Bind(R.id.dpBegin)
-  DatePicker dpBeginDate;
-  @Bind(R.id.dpEnd)
-  DatePicker dpEndDate;
+  @Bind(R.id.tvBegin)
+  TextView tvBegin;
+  @Bind(R.id.tvEnd)
+  TextView tvEnd;
   @Bind(R.id.spSortOrder)
   Spinner spSortOrder;
   @Bind(R.id.cbArts)
@@ -37,16 +38,47 @@ public class SettingsSavedListener {
   @Bind(R.id.cbSports)
   CheckBox cbSports;
 
-  private ArrayAdapter<String> spinnerAdapter;
+  //private ArrayAdapter<String> spinnerAdapter;
   private Settings settings;
   private Dialog dialog;
+  private DatePickerListener datePickerListener;
+  private FragmentManager fragmentManager;
 
-  public SettingsSavedListener(Settings settings, Context context) {
+  public SettingsSavedListener(Settings settings, FragmentManager fragmentManager) {
     this.settings = settings;
+    this.fragmentManager = fragmentManager;
+    /*
     spinnerAdapter = new ArrayAdapter<String>(
         context,
-        android.R.layout.simple_spinner_item,
+        R.layout.item_spinner_view,
+        //android.R.layout.simple_spinner_item,
         Settings.sortOrderValues);
+        */
+  }
+
+  @OnClick(R.id.tvBegin)
+  public void setStartDate(View view) {
+    if(datePickerListener == null) {
+      datePickerListener = new DatePickerListener((TextView)view);
+    } else {
+      datePickerListener.setView((TextView)view);
+    }
+    DatePickerFragment fragment = new DatePickerFragment();
+    fragment.setListener(datePickerListener);
+    fragment.show(fragmentManager, "begin date");
+  }
+
+  @OnClick(R.id.tvEnd)
+  public void setEndDate(View view) {
+    if(datePickerListener == null) {
+      datePickerListener = new DatePickerListener((TextView)view);
+    } else {
+      datePickerListener.setView((TextView)view);
+    }
+    DatePickerFragment datePickerFragment = new DatePickerFragment();
+    datePickerFragment.setListener(datePickerListener);
+    datePickerFragment.show(fragmentManager, "end date");
+
   }
 
   private boolean isDateValid(
@@ -65,8 +97,8 @@ public class SettingsSavedListener {
   @OnClick(R.id.btnSave)
   public void saveSettings(View view) {
     if (!isDateValid(
-        new int[]{dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
-        new int[]{dpEndDate.getYear(), dpEndDate.getMonth(), dpEndDate.getDayOfMonth()})) {
+        Settings.getDate(tvBegin.getText().toString()),
+        Settings.getDate(tvEnd.getText().toString()))) {
       Toast.makeText(
           dialog.getContext(),
           "Begin Date is later than End Date", Toast.LENGTH_SHORT).show();
@@ -74,7 +106,7 @@ public class SettingsSavedListener {
     }
 
     if (!isDateValid(
-        new int[]{dpBeginDate.getYear(), dpBeginDate.getMonth(), dpBeginDate.getDayOfMonth()},
+        Settings.getDate(tvBegin.getText().toString()),
         Settings.getDate(new LocalDate().toString(Settings.DATE_FORMAT)))) {
       Toast.makeText(
           dialog.getContext(),
@@ -82,27 +114,10 @@ public class SettingsSavedListener {
       return;
     }
 
-    settings.setStartDate(
-        Settings.getDateString(
-            dpBeginDate.getYear(),
-            dpBeginDate.getMonth(),
-            dpBeginDate.getDayOfMonth()
-        )
-    );
+    settings.setStartDate(tvBegin.getText().toString());
+    settings.setEndDate(tvEnd.getText().toString());
 
-    settings.setEndDate(
-        Settings.getDateString(
-            dpEndDate.getYear(),
-            dpEndDate.getMonth(),
-            dpEndDate.getDayOfMonth()
-        )
-    );
-
-    settings.setSortOrder(
-        Settings.SortOrder.valueOf(
-            (String) spSortOrder.getSelectedItem()
-        )
-    );
+    settings.setSortOrder(spSortOrder.getSelectedItem().toString());
 
     settings.getNewsDesk().clear();
     for (CheckBox ctView :
@@ -124,6 +139,9 @@ public class SettingsSavedListener {
   }
 
   public void initializeView() {
+    tvBegin.setText(settings.getStartDate());
+    tvEnd.setText(settings.getEndDate());
+    /*
     int[] beginDate = Settings.getDate(
         settings.getStartDate()
     );
@@ -142,9 +160,19 @@ public class SettingsSavedListener {
         endDate[2],
         null
     );
-    spSortOrder.setAdapter(spinnerAdapter);
-    spSortOrder.setSelection(
-        spinnerAdapter.getPosition(settings.getSortOrder().name()));
+    */
+    //spSortOrder.setAdapter(spinnerAdapter);
+    int index = 0;
+    if(settings.getSortOrder() != null)  {
+      SpinnerAdapter adapter = spSortOrder.getAdapter();
+      for (int i = 0; i < adapter.getCount(); i++) {
+        if (adapter.getItem(i).equals(settings.getSortOrder())) {
+          index = i;
+          break;
+        }
+      }
+    }
+    spSortOrder.setSelection(index);
     for (CheckBox ctView : ImmutableList.of(cbArts, cbFashion, cbSports)) {
       String newsDeskText = ctView.getText().toString();
       ctView.setChecked(settings.getNewsDesk().contains(newsDeskText));

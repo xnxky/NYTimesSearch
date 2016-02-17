@@ -38,6 +38,7 @@ import com.xxy.nytimessearch.R;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -72,6 +73,10 @@ public class SearchActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     ActionBar actionBar = getSupportActionBar();
+    //PUT it in AndroidManifest.xml does NOT work
+    actionBar.setLogo(R.drawable.ic_action_new_york_times_logo_icon_65789);
+    actionBar.setDisplayUseLogoEnabled(true);
+    actionBar.setDisplayShowHomeEnabled(true);
     actionBar.setDisplayHomeAsUpEnabled(true);
     mArticles = new ArrayList<>();
     settings = new Settings();
@@ -152,6 +157,15 @@ public class SearchActivity extends AppCompatActivity {
           }
         }
     );
+
+    if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+      try {
+        Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+        m.setAccessible(true);
+        m.invoke(menu, true);
+      } catch (Exception e) {
+      }
+    }
     return true;
   }
 
@@ -172,7 +186,7 @@ public class SearchActivity extends AppCompatActivity {
 
   public void modifySettings() {
     SettingsSavedListener listener =
-        new SettingsSavedListener(settings, getApplicationContext());
+        new SettingsSavedListener(settings, getSupportFragmentManager());
     SettingsDialogFragment dialogFragment =
         SettingsDialogFragment.newInstance(listener);
     FragmentManager fm = getSupportFragmentManager();
@@ -189,7 +203,7 @@ public class SearchActivity extends AppCompatActivity {
     params.put("q", query);
     params.put("begin_date", settings.getStartDate());
     params.put("end_date", settings.getEndDate());
-    params.put("sort", settings.getSortOrder().name());
+    params.put("sort", settings.getSortOrder());
     if (!settings.getNewsDesk().isEmpty()) {
       params.put("fq", getNewsDeskPara(settings.getNewsDesk()));
     }
