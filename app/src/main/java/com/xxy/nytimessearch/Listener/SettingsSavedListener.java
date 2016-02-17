@@ -3,10 +3,10 @@ package com.xxy.nytimessearch.Listener;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.google.common.collect.ImmutableList;
@@ -37,16 +37,19 @@ public class SettingsSavedListener {
   @Bind(R.id.cbSports)
   CheckBox cbSports;
 
-  private ArrayAdapter<String> spinnerAdapter;
+  //private ArrayAdapter<String> spinnerAdapter;
   private Settings settings;
   private Dialog dialog;
 
   public SettingsSavedListener(Settings settings, Context context) {
     this.settings = settings;
+    /*
     spinnerAdapter = new ArrayAdapter<String>(
         context,
-        android.R.layout.simple_spinner_item,
+        R.layout.item_spinner_view,
+        //android.R.layout.simple_spinner_item,
         Settings.sortOrderValues);
+        */
   }
 
   private boolean isDateValid(
@@ -98,11 +101,7 @@ public class SettingsSavedListener {
         )
     );
 
-    settings.setSortOrder(
-        Settings.SortOrder.valueOf(
-            (String) spSortOrder.getSelectedItem()
-        )
-    );
+    settings.setSortOrder(spSortOrder.getSelectedItem().toString());
 
     settings.getNewsDesk().clear();
     for (CheckBox ctView :
@@ -142,9 +141,18 @@ public class SettingsSavedListener {
         endDate[2],
         null
     );
-    spSortOrder.setAdapter(spinnerAdapter);
-    spSortOrder.setSelection(
-        spinnerAdapter.getPosition(settings.getSortOrder().name()));
+    //spSortOrder.setAdapter(spinnerAdapter);
+    int index = 0;
+    if(settings.getSortOrder() != null)  {
+      SpinnerAdapter adapter = spSortOrder.getAdapter();
+      for (int i = 0; i < adapter.getCount(); i++) {
+        if (adapter.getItem(i).equals(settings.getSortOrder())) {
+          index = i;
+          break;
+        }
+      }
+    }
+    spSortOrder.setSelection(index);
     for (CheckBox ctView : ImmutableList.of(cbArts, cbFashion, cbSports)) {
       String newsDeskText = ctView.getText().toString();
       ctView.setChecked(settings.getNewsDesk().contains(newsDeskText));

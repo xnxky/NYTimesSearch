@@ -189,7 +189,7 @@ public class SearchActivity extends AppCompatActivity {
     params.put("q", query);
     params.put("begin_date", settings.getStartDate());
     params.put("end_date", settings.getEndDate());
-    params.put("sort", settings.getSortOrder().name());
+    params.put("sort", settings.getSortOrder());
     if (!settings.getNewsDesk().isEmpty()) {
       params.put("fq", getNewsDeskPara(settings.getNewsDesk()));
     }
