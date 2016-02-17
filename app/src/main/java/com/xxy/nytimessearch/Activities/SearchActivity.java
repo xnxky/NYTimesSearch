@@ -73,6 +73,10 @@ public class SearchActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     ActionBar actionBar = getSupportActionBar();
+    //PUT it in AndroidManifest.xml does NOT work
+    actionBar.setLogo(R.drawable.ic_action_new_york_times_logo_icon_65789);
+    actionBar.setDisplayUseLogoEnabled(true);
+    actionBar.setDisplayShowHomeEnabled(true);
     actionBar.setDisplayHomeAsUpEnabled(true);
     mArticles = new ArrayList<>();
     settings = new Settings();
@@ -182,7 +186,7 @@ public class SearchActivity extends AppCompatActivity {
 
   public void modifySettings() {
     SettingsSavedListener listener =
-        new SettingsSavedListener(settings, getApplicationContext());
+        new SettingsSavedListener(settings, getSupportFragmentManager());
     SettingsDialogFragment dialogFragment =
         SettingsDialogFragment.newInstance(listener);
     FragmentManager fm = getSupportFragmentManager();

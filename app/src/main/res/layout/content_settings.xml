@@ -7,48 +7,64 @@
         android:id="@+id/tvBeginDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textStyle="bold"
+        android:textSize="@dimen/button_text_size"
+        android:layout_marginLeft="@dimen/start_margin"
+        android:layout_marginStart="@dimen/start_margin"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/begin_date"/>
 
 
-    <DatePicker
-        android:id="@+id/dpBegin"
+    <TextView
+        android:id="@+id/tvBegin"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/datepicker_height"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/button_text_size"
         android:layout_toRightOf="@id/tvBeginDate"
         android:layout_toEndOf="@id/tvBeginDate"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignTop="@id/tvBeginDate"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:id="@+id/tvEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/dpBegin"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/start_margin"
+        android:layout_marginStart="@dimen/start_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/tvBeginDate"
         android:text="@string/end_date"/>
 
-    <DatePicker
-        android:id="@+id/dpEnd"
+    <TextView
+        android:id="@+id/tvEnd"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/datepicker_height"
-        android:layout_below="@id/dpBegin"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvEndDate"
+        android:layout_alignLeft="@id/tvBegin"
+        android:layout_alignStart="@id/tvBegin"
+        android:layout_below="@id/tvBegin"
         android:layout_toRightOf="@id/tvEndDate"
-        android:layout_toEndOf="@id/tvEndDate"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"/>
+        android:layout_toEndOf="@id/tvEndDate"/>
 
     <TextView
         android:id="@+id/tvSortOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/dpEnd"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/start_margin"
+        android:layout_marginStart="@dimen/start_margin"
+        android:textSize="@dimen/button_text_size"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/tvEnd"
         android:text="@string/sort_order"/>
 
     <Spinner
@@ -59,17 +75,21 @@
         android:layout_alignTop="@id/tvSortOrder"
         android:layout_toRightOf="@id/tvSortOrder"
         android:layout_toEndOf="@id/tvSortOrder"
+        android:layout_alignLeft="@id/tvBegin"
+        android:layout_alignStart="@id/tvBegin"
         android:spinnerMode="dropdown"/>
 
     <TextView
         android:id="@+id/tvNewsDesk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textStyle="bold"
+        android:layout_alignLeft="@id/tvBeginDate"
+        android:layout_alignStart="@id/tvBeginDate"
         android:layout_alignRight="@id/tvEndDate"
         android:layout_alignEnd="@id/tvEndDate"
+        android:textSize="@dimen/button_text_size"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_below="@id/spSortOrder"
         android:text="@string/news_desk"/>
 
@@ -79,6 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/spSortOrder"
         android:layout_toEndOf="@id/tvNewsDesk"
+        android:textStyle="bold"
+        android:textSize="@dimen/button_text_size"
         android:layout_toRightOf="@id/tvNewsDesk"
         android:layout_alignLeft="@id/spSortOrder"
         android:layout_alignStart="@id/spSortOrder"
@@ -91,6 +113,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cbArts"
+        android:textStyle="bold"
+        android:textSize="@dimen/button_text_size"
         android:layout_toEndOf="@id/tvNewsDesk"
         android:layout_toRightOf="@id/tvNewsDesk"
         android:layout_alignLeft="@id/spSortOrder"
@@ -103,6 +127,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/cbFashion"
+        android:textStyle="bold"
+        android:textSize="@dimen/button_text_size"
         android:layout_alignStart="@id/cbFashion"
         android:layout_below="@id/cbFashion"
         android:checked="false"
@@ -114,7 +140,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/cbSports"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_centerHorizontal="true"
+        android:textSize="@dimen/button_text_size"
         android:background="@color/colorPrimary"
         android:text="@string/save_button"/>
 

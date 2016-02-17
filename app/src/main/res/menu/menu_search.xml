@@ -7,7 +7,7 @@
         android:orderInCategory="100"
         android:icon="@drawable/settings"
         android:title=""
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_search"

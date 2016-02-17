@@ -24,11 +24,12 @@ public class DatePickerFragment extends DialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     // Create a new instance of TimePickerDialog and return it
+    int[] date = mListener.getDate();
     return new DatePickerDialog(
         getActivity(),
         mListener,
-        mListener.getYear(),
-        mListener.getMonth(),
-        mListener.getDay());
+        date[0],
+        date[1],
+        date[2]);
   }
 }
